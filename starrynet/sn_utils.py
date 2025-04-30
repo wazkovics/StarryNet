@@ -382,7 +382,7 @@ class sn_Webserver_Init_Thread(threading.Thread):
         n_container = len(all_container_info) - 1
         container_id_list = []
         for container_idx in range(1, n_container + 1):
-            container_id_list.append(all_container_info[container_idx].split()[6])
+            container_id_list.append(all_container_info[container_idx].split()[11])
 
         print("Ground num  "+ str(self.ground_num))
         print("Docker containers "+str(n_container))
