@@ -352,7 +352,7 @@ class sn_Routing_Init_Thread(threading.Thread):
 
 class sn_Webserver_Init_Thread(threading.Thread):
     def __init__(self, remote_ssh, remote_ftp, container_id_list, file_path,
-                 configuration_file_path, constellation_size,
+                 configuration_file_path, constellation_size,ground_num
                  ):
         threading.Thread.__init__(self)
         self.remote_ssh = remote_ssh
@@ -361,6 +361,7 @@ class sn_Webserver_Init_Thread(threading.Thread):
         self.file_path = file_path
         self.configuration_file_path = configuration_file_path
         self.constellation_size = constellation_size
+        self.ground_num = ground_num
 
         if self.container_id_list == []:
             self.container_id_list = sn_get_container_info(self.remote_ssh)
@@ -379,7 +380,8 @@ class sn_Webserver_Init_Thread(threading.Thread):
         #                     " ifconfig B" + str(des) +
         #                     "-default |awk -F '[ :]+' 'NR==2{print $4}'")
         print("Constellation size is "+str(self.constellation_size))
-        print("Container id list size "+str(self.container_id_list.__sizeof__()))
+        print("Ground num  "+ str(self.ground_num))
+        print(str(self.container_id_list))
 
 
 
