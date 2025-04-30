@@ -145,7 +145,7 @@ class StarryNet():
         webserver_thread = sn_Webserver_Init_Thread(self.remote_ssh, self.remote_ftp,
                                                     self.container_id_list, self.file_path,
                                                     self.configuration_file_path,
-                                                    self.constellation_size,self.ground_num)
+                                                    self.ground_num)
         webserver_thread.start()
         webserver_thread.join()
         print("Webserver setup complete")

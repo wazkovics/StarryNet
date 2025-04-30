@@ -352,7 +352,7 @@ class sn_Routing_Init_Thread(threading.Thread):
 
 class sn_Webserver_Init_Thread(threading.Thread):
     def __init__(self, remote_ssh, remote_ftp, container_id_list, file_path,
-                 configuration_file_path, constellation_size,ground_num
+                 configuration_file_path,ground_num
                  ):
         threading.Thread.__init__(self)
         self.remote_ssh = remote_ssh
@@ -360,7 +360,6 @@ class sn_Webserver_Init_Thread(threading.Thread):
         self.container_id_list = copy.deepcopy(container_id_list)
         self.file_path = file_path
         self.configuration_file_path = configuration_file_path
-        self.constellation_size = constellation_size
         self.ground_num = ground_num
 
         if self.container_id_list == []:
@@ -381,10 +380,14 @@ class sn_Webserver_Init_Thread(threading.Thread):
         #                     "-default |awk -F '[ :]+' 'NR==2{print $4}'")
         all_container_info = sn_remote_cmd(self.remote_ssh, "docker ps")
         n_container = len(all_container_info) - 1
-        print("Constellation size is "+str(self.constellation_size))
+        container_id_list = []
+        for container_idx in range(1, n_container + 1):
+            container_id_list.append(all_container_info[container_idx].split()[6])
+
         print("Ground num  "+ str(self.ground_num))
         print("Docker containers "+str(n_container))
-        print(str(all_container_info))
+
+        print(str(container_id_list))
 
 
 
