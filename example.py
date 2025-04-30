@@ -25,6 +25,7 @@ if __name__ == "__main__":
     sn.create_nodes()
     sn.create_links()
     sn.run_routing_deamon()
+    sn.run_webserver_setup()
 
     node_index1 = 1
     node_index2 = 2

@@ -140,6 +140,18 @@ class StarryNet():
         routing_thread.join()
         print("Bird routing in all containers are running.")
 
+    def run_webserver_setup(self):
+        print("Webserver Setup")
+        webserver_thread = sn_Webserver_Init_Thread(self.remote_ssh, self.remote_ftp,
+                                                    self.container_id_list, self.file_path,
+                                                    self.configuration_file_path,
+                                                    self.constellation_size, self.sat_number)
+        webserver_thread.start()
+        webserver_thread.join()
+        print("Webserver setup complete")
+
+
+
     def get_distance(self, sat1_index, sat2_index, time_index):
         delaypath = self.configuration_file_path + "/" + self.file_path + '/delay/' + str(
             time_index) + '.txt'

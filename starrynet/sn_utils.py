@@ -8,6 +8,7 @@ from time import sleep
 import time
 import numpy
 import random
+
 """
 Starrynet utils that are used in sn_synchronizer
 author: Yangtao Deng (dengyt21@mails.tsinghua.edu.cn) and Zeqi Lai (zeqilai@tsinghua.edu.cn)
@@ -348,6 +349,38 @@ class sn_Routing_Init_Thread(threading.Thread):
             "/sn_orchestrater.py" + " " + str(self.constellation_size) + " " +
             str(self.fac_num) + " " + self.file_path)
         print("Routing initialized!")
+
+class sn_Webserver_Init_Thread(threading.Thread):
+    def __init__(self, remote_ssh, remote_ftp, container_id_list, file_path,
+                 configuration_file_path, constellation_size,
+                 sat_number):
+        threading.Thread.__init__(self)
+        self.remote_ssh = remote_ssh
+        self.remote_ftp = remote_ftp
+        self.container_id_list = copy.deepcopy(container_id_list)
+        self.file_path = file_path
+        self.configuration_file_path = configuration_file_path
+        self.constellation_size = constellation_size
+        self.sat_number = sat_number
+        if self.container_id_list == []:
+            self.container_id_list = sn_get_container_info(self.remote_ssh)
+    def run(self):
+        # if des <= self.constellation_size:
+        #     ifconfig_output = sn_remote_cmd(
+        #         self.remote_ssh, "docker exec -it " + str(self.container_id_list[des - 1]) +
+        #                     " ifconfig | sed 's/[ \t].*//;/^\(eth0\|\)\(lo\|\)$/d'")
+        # des_IP = sn_remote_cmd(
+        #     remote_ssh, "docker exec -it " + str(self.container_id_list[des - 1]) +
+        #                 " ifconfig " + ifconfig_output[0][:-1] +
+        #                 "|awk -F '[ :]+' 'NR==2{print $4}'")
+        # else:
+        #     des_IP = sn_remote_cmd(
+        #         remote_ssh, "docker exec -it " + str(container_id_list[des - 1]) +
+        #                     " ifconfig B" + str(des) +
+        #                     "-default |awk -F '[ :]+' 'NR==2{print $4}'")
+        print("Constellation size is "+str(self.constellation_size))
+        print("Sat number is "+str(self.sat_number))
+
 
 
 # A thread designed for emulation.
