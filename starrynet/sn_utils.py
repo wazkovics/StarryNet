@@ -4,7 +4,7 @@ import json
 import copy
 import argparse
 import os
-from time import sleep
+from time import sleep, strftime
 import time
 import numpy
 import random
@@ -353,7 +353,7 @@ class sn_Routing_Init_Thread(threading.Thread):
 class sn_Webserver_Init_Thread(threading.Thread):
     def __init__(self, remote_ssh, remote_ftp, container_id_list, file_path,
                  configuration_file_path, constellation_size,
-                 sat_number):
+                 ):
         threading.Thread.__init__(self)
         self.remote_ssh = remote_ssh
         self.remote_ftp = remote_ftp
@@ -361,7 +361,7 @@ class sn_Webserver_Init_Thread(threading.Thread):
         self.file_path = file_path
         self.configuration_file_path = configuration_file_path
         self.constellation_size = constellation_size
-        self.sat_number = sat_number
+
         if self.container_id_list == []:
             self.container_id_list = sn_get_container_info(self.remote_ssh)
     def run(self):
@@ -379,7 +379,8 @@ class sn_Webserver_Init_Thread(threading.Thread):
         #                     " ifconfig B" + str(des) +
         #                     "-default |awk -F '[ :]+' 'NR==2{print $4}'")
         print("Constellation size is "+str(self.constellation_size))
-        print("Sat number is "+str(self.sat_number))
+        print("Container id list size "+str(self.container_id_list.__sizeof__()))
+
 
 
 
