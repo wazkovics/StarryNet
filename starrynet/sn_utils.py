@@ -390,6 +390,10 @@ class sn_Webserver_Init_Thread(threading.Thread):
         sn_remote_cmd(self.remote_ssh,"docker exec -d " +str(container_name_list[web_server_id])+ " nginx -g 'daemon off;'")
         #copy index from home directory
         sn_remote_cmd(self.remote_ssh, "docker cp ./index.html " +str(container_name_list[web_server_id])+ ":/var/www/html/index.html")
+        ip_address = sn_remote_cmd(self.remote_ssh, 'docker exec '+str(container_name_list[web_server_id])+' sh -c "ip a"')
+        print("Web server Ip Address: "+str(ip_address))
+
+
 
 
 
