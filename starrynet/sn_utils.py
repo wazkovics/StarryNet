@@ -9,6 +9,8 @@ import time
 import numpy
 import random
 
+from numpy.lib.user_array import container
+
 """
 Starrynet utils that are used in sn_synchronizer
 author: Yangtao Deng (dengyt21@mails.tsinghua.edu.cn) and Zeqi Lai (zeqilai@tsinghua.edu.cn)
@@ -365,29 +367,28 @@ class sn_Webserver_Init_Thread(threading.Thread):
         if self.container_id_list == []:
             self.container_id_list = sn_get_container_info(self.remote_ssh)
     def run(self):
-        # if des <= self.constellation_size:
-        #     ifconfig_output = sn_remote_cmd(
-        #         self.remote_ssh, "docker exec -it " + str(self.container_id_list[des - 1]) +
-        #                     " ifconfig | sed 's/[ \t].*//;/^\(eth0\|\)\(lo\|\)$/d'")
-        # des_IP = sn_remote_cmd(
-        #     remote_ssh, "docker exec -it " + str(self.container_id_list[des - 1]) +
-        #                 " ifconfig " + ifconfig_output[0][:-1] +
-        #                 "|awk -F '[ :]+' 'NR==2{print $4}'")
-        # else:
-        #     des_IP = sn_remote_cmd(
-        #         remote_ssh, "docker exec -it " + str(container_id_list[des - 1]) +
-        #                     " ifconfig B" + str(des) +
-        #                     "-default |awk -F '[ :]+' 'NR==2{print $4}'")
+
         all_container_info = sn_remote_cmd(self.remote_ssh, "docker ps")
         n_container = len(all_container_info) - 1
-        container_id_list = []
+        container_name_list = []
         for container_idx in range(1, n_container + 1):
-            container_id_list.append(all_container_info[container_idx].split()[11])
+            container_name_list.append(all_container_info[container_idx].split()[11])
 
         print("Ground num  "+ str(self.ground_num))
         print("Docker containers "+str(n_container))
 
-        print(str(container_id_list))
+
+        #set up web server
+        ground_stations = self.ground_num
+        web_server_id  = n_container - (ground_stations-1)
+        print("Name "+str(container_name_list[web_server_id+1]))
+
+        #sn_remote_cmd(self.remote_ssh,"docker exec -it " +str(container_name_list[web_server_id+1])+ " ip route add default via 172.17.0.1")
+        #sn_remote_cmd(self.)
+
+
+
+
 
 
 
