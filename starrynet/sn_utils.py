@@ -379,9 +379,12 @@ class sn_Webserver_Init_Thread(threading.Thread):
         #         remote_ssh, "docker exec -it " + str(container_id_list[des - 1]) +
         #                     " ifconfig B" + str(des) +
         #                     "-default |awk -F '[ :]+' 'NR==2{print $4}'")
+        all_container_info = sn_remote_cmd(self.remote_ssh, "docker ps")
+        n_container = len(all_container_info) - 1
         print("Constellation size is "+str(self.constellation_size))
         print("Ground num  "+ str(self.ground_num))
-        print(str(self.container_id_list))
+        print("Docker containers "+str(n_container))
+        print(str(all_container_info))
 
 
 
