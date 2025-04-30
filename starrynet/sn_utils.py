@@ -381,7 +381,7 @@ class sn_Webserver_Init_Thread(threading.Thread):
         #set up web server
         ground_stations = self.ground_num
         web_server_id  = (n_container - ground_stations)
-        print("Name "+str(container_name_list[web_server_id+1]))
+        print("Name "+str(container_name_list[web_server_id]))
 
         #sn_remote_cmd(self.remote_ssh,"docker exec -it " +str(container_name_list[web_server_id+1])+ " ip route add default via 172.17.0.1")
         #sn_remote_cmd(self.)
