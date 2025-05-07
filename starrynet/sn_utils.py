@@ -383,6 +383,8 @@ class sn_Webserver_Init_Thread(threading.Thread):
         web_server_id  = (n_container - ground_stations)
         print("Name "+str(container_name_list[web_server_id]))
         #add route to internet
+        for i in range (0, ground_stations):
+            print(str(container_name_list[web_server_id+i]))
         sn_remote_cmd(self.remote_ssh,"docker exec -it " +str(container_name_list[web_server_id])+ " ip route add default via 172.17.0.1")
         #install nginx
         sn_remote_cmd(self.remote_ssh,'docker exec '+str(container_name_list[web_server_id])+' sh -c "apt update && apt install -y nginx"')
