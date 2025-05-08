@@ -385,8 +385,8 @@ class sn_Webserver_Init_Thread(threading.Thread):
         #add route to internet for every ground station
         for i in range (0, ground_stations):
             sn_remote_cmd(self.remote_ssh,"docker exec -it " +str(container_name_list[web_server_id+i])+ " ip route add default via 172.17.0.1")
-            if (i > 0):
-                sn_remote_cmd(self.remote_ssh, 'docker exec '+str(container_name_list[web_server_id+i])+' sh -c "apt-get update && apt-get install -y unzip git && git clone https://github.com/wg/wrk.git && cd /wrk && make"')
+            if i > 0:
+                sn_remote_cmd(self.remote_ssh, 'docker exec '+str(container_name_list[web_server_id+i])+' sh -c "apt-get update && apt-get install -y unzip git && git clone https://github.com/wg/wrk.git && cd /wrk && make && cp wrk /usr/local/bin/"')
             print(str(container_name_list[web_server_id+i]))
         #install nginx
         sn_remote_cmd(self.remote_ssh,'docker exec '+str(container_name_list[web_server_id])+' sh -c "apt update && apt install -y nginx"')
