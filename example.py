@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     sn.start_emulation()
 
-    sn.run_wrk(howlong,howoften) #input in seconds howlong = how long to run it, how often = ever X seconds
+    sn.run_wrk(30,60) #input in seconds howlong = how long to run it, how often = ever X seconds
     sn.stop_emulation()
 
 
