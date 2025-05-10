@@ -395,7 +395,7 @@ class sn_Webserver_Init_Thread(threading.Thread):
         #copy index from home directory
         sn_remote_cmd(self.remote_ssh, "docker cp ./index.html " +str(container_name_list[web_server_id])+ ":/var/www/html/index.html")
         ip_address = sn_remote_cmd(self.remote_ssh, 'docker exec '+str(container_name_list[web_server_id])+' sh -c "ip a"')
-        match = re.search(r'inet (\d+\.\d+\.\d+\.\d+)/\d+', ip_address)
+        match = re.search(r'inet (\d+\.\d+\.\d+\.\d+)/\d+', str(ip_address))
         print("Web server Ip Address: "+str(ip_address))
         if match:
             ip_addr = match.group(1)
