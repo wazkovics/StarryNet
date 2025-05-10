@@ -150,6 +150,15 @@ class StarryNet():
         webserver_thread.join()
         print("Webserver setup complete")
 
+    def run_wrk(self,howlong,howoften):
+        print("Starting Wrk")
+        wrk_thread = sn_Wrk_Init_Thread(self.remote_ssh, self.remote_ftp,
+                                        self.container_id_list, self.file_path,
+                                        self.configuration_file_path,
+                                        self.ground_num,howlong,howoften)
+        wrk_thread.start()
+        wrk_thread.stop()
+
 
 
     def get_distance(self, sat1_index, sat2_index, time_index):

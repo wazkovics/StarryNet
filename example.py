@@ -28,6 +28,8 @@ if __name__ == "__main__":
     sn.run_webserver_setup()
 
     sn.start_emulation()
+
+    sn.run_wrk(howlong,howoften) #input in seconds howlong = how long to run it, how often = ever X seconds
     sn.stop_emulation()
 
 

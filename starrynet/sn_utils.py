@@ -10,6 +10,7 @@ import random
 import re
 
 from numpy.lib.user_array import container
+from sympy import trunc
 
 """
 Starrynet utils that are used in sn_synchronizer
@@ -394,14 +395,50 @@ class sn_Webserver_Init_Thread(threading.Thread):
         sn_remote_cmd(self.remote_ssh,"docker exec -d " +str(container_name_list[web_server_id])+ " nginx -g 'daemon off;'")
         #copy index from home directory
         sn_remote_cmd(self.remote_ssh, "docker cp ./index.html " +str(container_name_list[web_server_id])+ ":/var/www/html/index.html")
-        ip_address = sn_remote_cmd(self.remote_ssh, 'docker exec '+str(container_name_list[web_server_id])+' sh -c "ip a"')
+        ip_address = sn_remote_cmd(self.remote_ssh, 'docker exec '+str(container_name_list[web_server_id])+' sh -c "ip a show eth0"')
         match = re.search(r'inet (\d+\.\d+\.\d+\.\d+)/\d+', str(ip_address))
-        print("Web server Ip Address: "+str(ip_address))
+        ip_addr = ""
         if match:
             ip_addr = match.group(1)
-            print(f"Container IP: {ip_addr}")
+            print(f"Web server Ip Address: {ip_addr}")
         else:
             print("No IP address found.")
+class sn_Wrk_Init_Thread(threading.Thread):
+    def __init__(self, remote_ssh, remote_ftp, container_id_list, file_path,
+                 configuration_file_path,ground_num,howlong,howoften
+                 ):
+        threading.Thread.__init__(self)
+        self.remote_ssh = remote_ssh
+        self.remote_ftp = remote_ftp
+        self.container_id_list = copy.deepcopy(container_id_list)
+        self.file_path = file_path
+        self.configuration_file_path = configuration_file_path
+        self.ground_num = ground_num
+        self.howlong = howlong
+        self.howoften = howoften
+
+        if self.container_id_list == []:
+            self.container_id_list = sn_get_container_info(self.remote_ssh)
+    def run(self):
+        all_container_info = sn_remote_cmd(self.remote_ssh, "docker ps")
+        n_container = len(all_container_info) - 1
+        container_name_list = []
+        for container_idx in range(1, n_container + 1):
+            container_name_list.append(all_container_info[container_idx].split()[11])
+        ground_stations = self.ground_num
+        web_server_id  = (n_container - ground_stations)
+        ip_address = sn_remote_cmd(self.remote_ssh, 'docker exec '+str(container_name_list[web_server_id])+' sh -c "ip a show eth0"')
+        match = re.search(r'inet (\d+\.\d+\.\d+\.\d+)/\d+', str(ip_address))
+        ip_addr = ""
+        if match:
+            ip_addr = match.group(1)
+        command_string = f"wrk -t1 -c400 -d{self.howlong}s http://{ip_addr}:80/index.html --latency"
+        while(True):
+            wrk_out = sn_remote_cmd(self.remote_ssh, 'docker exec '+str(container_name_list[web_server_id+2])+' sh -c '+command_string+'')
+            print(str(wrk_out))
+            time.sleep(self.howoften)
+
+
 
 
 
